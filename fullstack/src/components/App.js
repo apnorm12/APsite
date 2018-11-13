@@ -1,32 +1,27 @@
 // Defines the App component
 
 import React from 'react';
-import axios from 'axios';
 import Header from './Header';
-import ContestPreview from './ContestPreview';
+import ContestList from './ContestList';
+// import axios from 'axios';
 
-var name = "Aaron's";
-var friend = "Jeff"
-var message = "Hi " + friend + ", do you like " + name + " website?";
+// just abstracted so this is the only function that needs to be modified
+const pushState = (obj, url) =>
+  window.history.pushState(obj, '', url);
 
 class App extends React.Component {
   state = {
     pageHeader: "Naming Contests",
-    contests: []
+    contests: this.props.initialContests
   };
   componentDidMount() {
-    axios.get('/api/contests') //gives us a promise
-    //.then gives us a response object
-    .then(resp => {
-      // this line showed the response - and we could see a data field
-      // console.log(resp); - know we want resp.data.contests in setState
-      this.setState({
-        contests: resp.data.contests
-      });
-    })
-    .catch(console.error);
-
-
+    // axios.get('/api/contests')
+    //   .then(resp => {
+    //     this.setState({
+    //       contests: resp.data.contests
+    //     });
+    //   })
+    //   .catch(console.error);
     // timers. listeners
     // console.log(this.props);
     // console.log(this.props.contests);
@@ -35,26 +30,23 @@ class App extends React.Component {
   componentWillUnmount() {
     // clear timers, listeners
   }
+  fetchContest = (contestId) => {
+    pushState(
+      {currentContestId: contestId},
+      `/contest/${contestId}`
+    );
+  };
+
   render() {
     return (
   		<div className="App">
   			<Header message={this.state.pageHeader}/>
-  			<div>
-          {this.state.contests.map(contest =>
-            <ContestPreview key={contest.id} {...contest} />
-          )}
-  			</div>
+        <ContestList
+          onContestClick={this.fetchContest}
+          contests={this.state.contests}/>
   		</div>
   	);
   }
 }
 
 export default App;
-
-
-
-
-// componentWillUnmount() {
-//   console.log('Will Unmount');
-//   debugger;
-// }

@@ -1,25 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
+
 
 import Header from './components/Header';
 import App from './components/App';
 
 import data from './testData';
 
+
+// ReactDOM.render(
+// 	<App initialContests={[]}/>,
+// 	document.getElementById('root')
+// );
+
+axios.get('/api/contests') //gives us a promise
+//.then gives us a response object
+	.then(resp => {
+		// this line showed the response - and we could see a data field
+		// console.log(resp); - know we want resp.data.contests in setState
+		ReactDOM.render(
+			<App initialContests={resp.data.contests}/>,
+			document.getElementById('root')
+		);
+	})
+	.catch(console.error);
+
 // One responsibility now - Render top component to the DOM
 
 // Renders the App component to the DOM
-ReactDOM.render(
-	<App />,
-	// createElement(html tag, attributes, children we want element to have)
-	// React.createElement('h2', null, 'Hello React'),
-	document.getElementById('root')
-);
 
-ReactDOM.render(
-	<Header message=":)"/>,
-	document.getElementById('poop-root')
-);
+
+// ReactDOM.render(
+// 	<Header message=":)"/>,
+// 	document.getElementById('poop-root')
+// );
 
 
 // setTimeout(() => {

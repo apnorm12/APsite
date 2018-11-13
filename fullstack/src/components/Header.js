@@ -19,8 +19,5 @@ Header.propTypes = {
 	message : React.PropTypes.string
 };
 
-Header.defaultProps = {
-	message : 'Naming Contests'
-};
 
 export default Header;
